@@ -1,0 +1,56 @@
+<div class="w-100 h-100 d-flex flex-column">
+
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Sorting Visualizer</span>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+
+      <button mat-icon-button matTooltip="Shuffle array" (click)="randomize()">
+        <mat-icon>shuffle</mat-icon>
+      </button>
+      <button mat-icon-button class="mx-4" *ngIf="!($start | async); else stopBtn" (click)="sort(data)">
+        <mat-icon>play_circle_outline</mat-icon>
+      </button>
+
+      <ng-template #stopBtn>
+        <button mat-icon-button class="mx-4" (click)="stop()">
+          <mat-icon>pause_circle_outline</mat-icon>
+        </button>
+      </ng-template>
+  
+      <button mat-icon-button (click)="reset()" matTooltip="Reset array">
+        <mat-icon>refresh</mat-icon>
+      </button>
+  
+      <div>
+        <button *ngFor="let sort of availableSortingAlg; let l = last" mat-raised-button class="mx-2"
+           [class.active]="sort.active" [disabled]="sort.active || ($start | async)"
+          (click)="setSorter(sort.alg)"><small>{{ sort.name }}</small></button>
+      </div>
+
+
+      <div class="ml-5">
+        <h1><strong>{{ sortingAlg!.name | uppercase }}</strong></h1>
+      </div>
+  
+  
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <!-- Visualizer -->
+
+  <div class="d-flex flex-column flex-fill bg-light">
+
+    <div class="d-flex flex-row container justify-content-center">
+      <div *ngFor="let d of data; let i = index; let l = last">
+        <div [class.mr-1]="!l" [style.height.px]="d.value * 5" [style.minWidth.px]="itemWidth"
+          [class.bg-primary]="!d.active" [class.bg-success]="d.active && !d.swapping" [class.bg-danger]="d.swapping"
+          [class.bg-secondary]="d.finalrun" [class.bg-warning]="d.pivot"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
